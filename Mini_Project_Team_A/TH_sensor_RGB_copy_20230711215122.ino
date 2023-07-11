@@ -12,7 +12,7 @@ void setup() {
 
   if (!bmp.begin()) {
     Serial.println("BMP180 센서를 찾을 수 없습니다. 연결을 확인하세요.");
-    while (1);
+    while (1)
   }
 }
 
