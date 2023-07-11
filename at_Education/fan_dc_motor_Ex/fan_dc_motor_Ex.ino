@@ -23,13 +23,4 @@ void loop() {
   digitalWrite(A,HIGH); // 전체 정지
   digitalWrite(B,HIGH);
   delay(5000); //5초 후
-  
-  digitalWrite(A,HIGH);
-  digitalWrite(B,LOW); //팬모터가 B방향으로 회전 (반시계 방향 회전)
-  delay(2000); //2초 후
- 
-  digitalWrite(A,HIGH); // 전체 정지
-  digitalWrite(B,HIGH);
-  delay(5000); //5초 후
- 
 }
