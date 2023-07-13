@@ -5,7 +5,7 @@ Adafruit_BMP085 bmp; // bmp180 변수 이름 설정
   
 void setup() {
   Serial.begin(9600);
-  if (!bmp.begin()) {
+  if (!bmp.begin()) { //bmp180 동작 여부 확인(이 부분이 없어지면 bmp180 작동안함)
 	Serial.println("Could not find a valid BMP085 sensor, check wiring!");
 	while (1) {}
   }
