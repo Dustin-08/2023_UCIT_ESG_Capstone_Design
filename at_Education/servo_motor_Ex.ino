@@ -1,3 +1,5 @@
+// gitpull test
+
 #include<Servo.h> //Servo 라이브러리를 추가
 Servo servo;      //Servo 클래스로 servo객체 생성
 int value = 0;    // 각도를 조절할 변수 value
