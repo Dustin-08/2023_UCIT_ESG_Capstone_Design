@@ -14,7 +14,7 @@ void loop() {
   Serial.print("Temperature: ");
   Serial.print(temperature);
   Serial.println(" C - Fan On");
-  if (temperature >=26){
+  if (temperature < 1){
     digitalWrite(A,LOW);
     digitalWrite(B,HIGH);
   }
