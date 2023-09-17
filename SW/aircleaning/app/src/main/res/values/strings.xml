@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">aircleaning</string>
+    <string name="restart">새로고침</string>
+    <string name="sad">나쁨</string>
+    <string name="smile">보통</string>
+    <string name="angel">좋음</string>
+    <string name="angry">매우나쁨</string>
+</resources>
