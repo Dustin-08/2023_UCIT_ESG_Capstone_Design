@@ -12,9 +12,6 @@ int rgb_red = 7;
 int rgb_green = 6;
 int rgb_blue = 5;
 
-//초음파 센서
-int trig = 4;
-int echo = 3;
 
 //소독용 UV LED
 int led = 10;
