@@ -1,4 +1,5 @@
 package com.example.bluetooth;
+
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -18,17 +19,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import java.text.BreakIterator;
-import java.util.ArrayList;
 import java.util.Set;
+
 public class MainActivity extends AppCompatActivity {
     private BluetoothAdapter bluetoothAdapter;
     private ListView deviceListView;
     private ArrayAdapter<String> deviceListAdapter;
     private Button btn_bluetooth_onoff;
     private BluetoothManager bluetoothManager;
-    private static final int REQUEST_ENABLE_BT = 1; // 권한 요청하는 상수
-    private static final int REQUEST_PERMISSION = 2; // 얘도
+    private static final int REQUEST_ENABLE_BT = 1; // 블루투스 활성화 요청 코드
+    private static final int REQUEST_PERMISSION = 2; // 위치 권한 요청 코드
+    private static final int REQUEST_PERMISSION_BLUETOOTH_CONNECT = 3; // 블루투스 연결 권한 요청 코드
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,25 +46,26 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 toggleBluetooth();
             }
+
             private void toggleBluetooth() {
                 if (bluetoothAdapter.isEnabled()) {
                     if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
+                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, REQUEST_PERMISSION_BLUETOOTH_CONNECT);
                         return;
+                    } else {
+                        bluetoothAdapter.disable();
                     }
-                    bluetoothAdapter.disable();
-                }
-                else {
-                    bluetoothAdapter.isEnabled();
+                } else {
+                    if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, REQUEST_PERMISSION_BLUETOOTH_CONNECT);
+                        return;
+                    } else {
+                        bluetoothAdapter.enable();
+                    }
                 }
                 updateToggleButtonText();
             }
+
             private void updateToggleButtonText() {
                 Button toggleBluetoothButton = findViewById(R.id.btn_bluetooth_onoff);
                 if (bluetoothAdapter.isEnabled()) {
@@ -72,31 +75,20 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
         // 블루투스 활성화 확인
         if (!bluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            Toast.makeText(this, "블루투스 활성화 확인", Toast.LENGTH_SHORT).show();
         }
-        // 블루투스 어답터 초기화
+
+        // 블루투스 어댑터 초기화
         if (bluetoothAdapter == null) {
             Toast.makeText(this, "블루투스를 지원하지 않습니다.", Toast.LENGTH_SHORT).show();
             finish();
         }
-        // 블루투스 활성화 확인
-        if (!bluetoothAdapter.isEnabled()) {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-        }
+
         // 블루투스 장치 검색 버튼
         Button searchButton = findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private void checkPermissionsAndStartDiscovery() {
         // 위치 권한 확인
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -117,19 +110,15 @@ public class MainActivity extends AppCompatActivity {
             startDiscovery();
         }
     }
+
     private void startDiscovery() {
         deviceListAdapter.clear();
         // 페어링된 장치 목록 가져오기
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_SCAN}, REQUEST_PERMISSION_BLUETOOTH_CONNECT);
             return;
         }
+
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
         for (BluetoothDevice device : pairedDevices) {
             deviceListAdapter.add(device.getName() + "\n" + device.getAddress());
@@ -137,23 +126,19 @@ public class MainActivity extends AppCompatActivity {
         // 장치 검색 시작
         bluetoothAdapter.startDiscovery();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if (bluetoothAdapter != null) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_SCAN}, REQUEST_PERMISSION_BLUETOOTH_CONNECT);
+            } else {
+                bluetoothAdapter.cancelDiscovery();
             }
-            bluetoothAdapter.cancelDiscovery();
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -166,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -173,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_ENABLE_BT) {
             if (resultCode == RESULT_OK) {
                 checkPermissionsAndStartDiscovery();
-            } else {
+            } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "블루투스를 활성화해야 합니다.", Toast.LENGTH_SHORT).show();
             }
         }
