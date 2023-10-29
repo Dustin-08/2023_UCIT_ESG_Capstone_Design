@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <DigitalClock
+            android:id="@+id/info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="상단바 정보 표시하는 부분" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/batteryLevel"
+            android:textSize="15sp"
+            android:gravity="left|center"
+            android:layout_weight="1"/>
+
+        <Switch
+            android:id="@+id/swUv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:switchMinWidth="70dp"
+            android:layout_weight="1"
+            android:text="UV LED"
+            android:textFontWeight="500"
+            android:thumbTint="#665C00"
+            android:trackTint="#C4B73B"/>
+    </LinearLayout>
+
+
+<!--    <ImageView-->
+<!--        android:id="@+id/value"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="3"-->
+<!--        android:gravity="center"-->
+<!--        android:src="@drawable/replace"-->
+<!--         />-->
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
+        android:orientation="horizontal"
+        >
+
+        <ImageView
+            android:id="@+id/face"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:src="@drawable/smile"
+             />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/value"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:gravity="center"
+                android:text="TextView"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/result"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="0.4"
+                android:textSize="30dp"
+                android:text="TextView" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/airState"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:backgroundTint="#4CAF50"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:text="Air Cleaner Leaning"
+        android:textSize="17dp"
+         />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/turnOn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="#A6A6A6"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:textSize="20sp"
+            android:text="TURN ON" />
+
+        <Button
+            android:id="@+id/turnOff"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="#A6A6A6"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:textSize="20sp"
+            android:text="TURN OFF" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnBlue"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:backgroundTint="@android:color/holo_blue_dark"
+        android:text="Connect Bluetooth" />
+
+    <ImageView
+        android:id="@+id/weather"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:layout_marginHorizontal="10dp"
+        android:src="@drawable/weather"
+        />
+
+    <TextView
+        android:id="@+id/tvNav"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:textSize="9sp"
+        android:text="자료 출처:환경부/한국환경공단\n해당 기관이 제공하는 자료는 '인증을 받지 않은 실시간자료'이므로\n자료오류 및 표출방식에 따라 값이 다를 수 있습니다."
+        android:gravity="center"
+        android:layout_weight="0.7"/>
+
+</LinearLayout>
