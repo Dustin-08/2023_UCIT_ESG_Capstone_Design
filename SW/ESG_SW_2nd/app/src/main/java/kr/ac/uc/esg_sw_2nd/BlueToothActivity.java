@@ -162,11 +162,8 @@ public class BlueToothActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 onConnectToDeviceClicked();
-                Intent intent = new Intent(BlueToothActivity.this,MainActivity.class);
-                startActivity(intent);
             }
             //다시 메인으로 돌아가기
-
         });
 
         // 블루투스 연결 해제 버튼
@@ -209,16 +206,6 @@ public class BlueToothActivity extends AppCompatActivity {
     private void connectToDevice(BluetoothDevice device) {
         try {
             // BluetoothSocket 생성
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
             bluetoothSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
 
             // 연결 시도 시작
@@ -299,8 +286,5 @@ public class BlueToothActivity extends AppCompatActivity {
                 Toast.makeText(this, "블루투스를 활성화해야 합니다.", Toast.LENGTH_SHORT).show();
             }
         }
-
-
     }
-
 }

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         value = findViewById(R.id.value);
         result = findViewById(R.id.result);
         airState = findViewById(R.id.airState);
-        btnBlue =findViewById(R.id.btnBlue);
+        btnBlue = findViewById(R.id.btnBlue);
 
 
         //value 값을 받으면 value 값에 따라 face와 result값이 변하도록
@@ -53,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
         int numVal = 30;
         airClear(numVal);
 
+        btnBlue.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, qwerActivity.class);
+            startActivity(intent);
+        });
 
         battery = (TextView)findViewById(R.id.batteryLevel);
         this.registerReceiver(this.batterylevelReceiver,new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
@@ -81,12 +86,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-        btnBlue.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this,BlueToothActivity.class);
-            startActivity(intent);
-        });
-
     }
 
     private void airClear(int numValue) {
@@ -104,8 +103,4 @@ public class MainActivity extends AppCompatActivity {
             face.setImageResource(R.drawable.angry);
         }
     }
-
-
-
-
 }

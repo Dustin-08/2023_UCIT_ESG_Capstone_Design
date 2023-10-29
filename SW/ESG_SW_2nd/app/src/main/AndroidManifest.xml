@@ -16,6 +16,12 @@
         android:theme="@style/Theme.ESG_SW_2nd"
         tools:targetApi="31">
         <activity
+            android:name=".qwerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".textActivity"
+            android:exported="false" />
+        <activity
             android:name=".BlueToothActivity"
             android:exported="false" />
         <activity
