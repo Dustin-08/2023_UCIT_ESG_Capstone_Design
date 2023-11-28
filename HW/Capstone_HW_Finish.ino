@@ -1,4 +1,4 @@
-#include<SoftwareSerial.h>
+#include <SoftwareSerial.h>
 
 #define BTtx       8 // 블루투스 모듈의 tx를 D7으로 설정
 #define BTrx       9 // 블루투스 모듈의 rx를 D8로 설정
@@ -8,23 +8,23 @@ SoftwareSerial BT(BTtx, BTrx); // tx, rx
 char data = 0; /* 앱을 통해 0 또는 1이라는 문자열을 받을건데 0이 꺼지는 default 값이므로 0으로 설정 */
 
 // 미세먼지 값 범위 제한
-float min = 0;
-float max = 100.0;
+float min = 0; // 최소
+float max = 100.0; // 최대
 
 //RGBLED
-int rgb_red = 7;
-int rgb_green = 6;
-int rgb_blue = 5;
+int rgb_red = 7; // RGB 핀 설정
+int rgb_green = 6; // RGB 핀 설정
+int rgb_blue = 5; // RGB 핀 설정
 
 
 //소독용 UV LED
 int led = 10;
 
 //미세먼지 센서
-int dust_sensor = A0;
-float dust_value = 0;
-float dustDensityug = 0;
-int sensor_led = 2;
+int dust_sensor = A0; // 미세먼지 센서 핀 설정
+float dust_value = 0; // 실수형 미세먼지 값
+float dustDensityug = 0; // 계산된 미세먼지 값
+int sensor_led = 2; // 미세먼지 모듈의 led 핀 설정
 int sampling = 280;
 int waiting = 40;
 float stop_time = 9680;
@@ -39,17 +39,17 @@ void setup(){
   BT.begin(9600); // BT를 보드레이트 9600으로 설정
   
   
-  Serial.begin(9600);
-  pinMode(sensor_led,OUTPUT);
-  pinMode(4, OUTPUT);
+  Serial.begin(9600); // 시리얼 모니터 보드레이트 설정
+  pinMode(sensor_led,OUTPUT); // 미세먼지 모듈의 led 핀 출력
+  pinMode(4, OUTPUT); // 
 
-  pinMode(rgb_red, OUTPUT);
-  pinMode(rgb_green, OUTPUT);
-  pinMode(rgb_blue, OUTPUT);
+  pinMode(rgb_red, OUTPUT); // RGB 핀 출력
+  pinMode(rgb_green, OUTPUT); // RGB 핀 출력
+  pinMode(rgb_blue, OUTPUT); // RGB 핀 출력
 
-  pinMode(IN1, OUTPUT);
-  pinMode(IN2, OUTPUT);
-  pinMode(ENA, OUTPUT);
+  pinMode(IN1, OUTPUT); // 모터 드라이버 모듈 출력 설정
+  pinMode(IN2, OUTPUT); // 모터 드라이버 모듈 출력 설정
+  pinMode(ENA, OUTPUT); // 모터 드라이버 모듈 출력 설정
 }
 
 void loop(){
@@ -60,22 +60,21 @@ void loop(){
   // 6. 실제 문자열에 따라 작동하는 구문-------------------------------------------------
   if(data == '0') { // data라는 문자열이 0이라면
     Serial.println("Turn OFF"); // 시리얼 모니터에 Turn OFF라는 문구 출력
-    analogWrite(rgb_red, 0);
-    analogWrite(rgb_green, 0);
-    analogWrite(rgb_blue, 0);
-    digitalWrite(IN1, HIGH);
-    digitalWrite(IN2, LOW);
-    digitalWrite(ENA, 0);
-
+    analogWrite(rgb_red, 0); // RGB Led Off
+    analogWrite(rgb_green, 0); // RGB Led Off
+    analogWrite(rgb_blue, 0); // RGB Led Off
+    digitalWrite(IN1, HIGH); // 회전 멈춤
+    digitalWrite(IN2, LOW); // 회전 멈춤
+    digitalWrite(ENA, 0); // 팬 속도 없음
   }
   else if(data == '1') { // data라는 문자열이 1이라면
     Serial.println("Turn ON"); // 시리얼 모니터에 Turn ON라는 문구 출력
     if(dustDensityug <= 35.0){ // 미세먼지 농도가 35 이하일 때
-      analogWrite(rgb_red, 0);
-      analogWrite(rgb_green, 0);
+      analogWrite(rgb_red, 0); // B를 키기 위해 R을 0으로
+      analogWrite(rgb_green, 0); // B를 키기 위해 G를 0으로
       analogWrite(rgb_blue, 255); // RGB 파란불이 들어옴
-      Serial.print("    ");
-      Serial.println("blue");
+      Serial.print("    "); 
+      Serial.println("blue"); // 파란불이 켜졌음을 시리얼 모니터로 보여주기
       digitalWrite(IN1, HIGH); 
       digitalWrite(IN2, LOW);
       analogWrite(ENA, 50); // 팬 속도를 약하게 돌림
